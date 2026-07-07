@@ -49,11 +49,22 @@ const CARD_STYLE = `
   ha-card {
     display: block;
     --ha-card-border-width: 0;
-    --ha-card-background: transparent;
-    --ha-card-box-shadow: none;
     border: none; background: transparent; box-shadow: none; overflow: visible;
   }
   .heater-card {
+    --dh-card-bg: var(--ha-card-background, var(--card-background-color));
+    --dh-panel-bg: color-mix(in srgb, var(--dh-card-bg), white 4%);
+    --dh-panel-bg-soft: color-mix(in srgb, var(--dh-card-bg), white 7%);
+    --dh-border: var(--divider-color);
+    --dh-border-soft: color-mix(in srgb, var(--divider-color), transparent 35%);
+    --dh-text: var(--primary-text-color);
+    --dh-text-muted: var(--secondary-text-color);
+    --dh-text-dim: var(--disabled-text-color);
+    --dh-accent: var(--accent-color);
+    --dh-heater: var(--state-climate-heat-color, var(--accent-color));
+    --dh-fan: var(--state-fan-on-color, var(--accent-color));
+    --dh-fuel: var(--primary-color);
+    --dh-ok: var(--state-binary_sensor-on-color, var(--success-color, #7fa66a));
     position: relative;
     width: 100%;
     min-height: 330px;
@@ -61,11 +72,10 @@ const CARD_STYLE = `
     grid-template-rows: auto 1fr auto;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
-    background:
-      radial-gradient(circle at 50% 42%, rgba(255,255,255,0.05), transparent 38%),
-      linear-gradient(145deg, #1c1c1c, #121212);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #f2f2f2;
+    background: var(--dh-card-bg);
+    border: 1px solid var(--dh-border);
+    box-shadow: var(--ha-card-box-shadow, none);
+    color: var(--dh-text);
     font-family: var(--paper-font-body1_-_font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
     padding: 8px;
   }
@@ -86,18 +96,22 @@ const CARD_STYLE = `
     letter-spacing: .04em;
     white-space: nowrap;
   }
-  .title svg { width: 17px; height: 17px; color: #ff8a22; filter: drop-shadow(0 0 8px rgba(255,116,24,.22)); flex: 0 0 auto; }
+  .title svg {
+    width: 17px; height: 17px; color: var(--dh-heater);
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--dh-heater), transparent 82%));
+    flex: 0 0 auto;
+  }
   .state-pill {
     min-width: 58px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid var(--dh-border-soft);
     border-radius: 999px;
     padding: 5px 7px;
     text-align: center;
     font-size: 11px;
     font-weight: 720;
-    color: var(--state-fg, #e8e8e8);
-    background: var(--state-bg, rgba(255,255,255,0.04));
-    border-color: var(--state-border, rgba(255,255,255,0.12));
+    color: var(--state-fg, var(--dh-text));
+    background: var(--state-bg, var(--dh-panel-bg));
+    border-color: var(--state-border, var(--dh-border-soft));
     cursor: pointer;
     white-space: nowrap;
   }
@@ -105,9 +119,9 @@ const CARD_STYLE = `
     width: 34px;
     height: 30px;
     border-radius: 11px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.03);
-    color: #efefef;
+    border: 1px solid color-mix(in srgb, var(--dh-heater), transparent 65%);
+    background: color-mix(in srgb, var(--dh-heater), transparent 88%);
+    color: var(--dh-heater);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -119,9 +133,9 @@ const CARD_STYLE = `
   .power-btn span { display: none; }
   .power-btn svg { width: 17px; height: 17px; flex: 0 0 auto; }
   .power-btn.active {
-    color: #ffd6a3;
-    background: rgba(255,116,24,.15);
-    border-color: rgba(255,138,34,.44);
+    color: color-mix(in srgb, var(--dh-heater), white 25%);
+    background: color-mix(in srgb, var(--dh-heater), transparent 82%);
+    border-color: color-mix(in srgb, var(--dh-heater), transparent 55%);
   }
   .main-layout {
     display: grid;
@@ -132,9 +146,9 @@ const CARD_STYLE = `
   }
   .panel {
     min-width: 0;
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid var(--dh-border-soft);
     border-radius: 12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+    background: var(--dh-panel-bg);
     padding: 8px 5px;
   }
   .panel-title {
@@ -142,7 +156,7 @@ const CARD_STYLE = `
     font-weight: 760;
     letter-spacing: .06em;
     text-align: center;
-    color: #d2d2d2;
+    color: var(--dh-text-muted);
     white-space: nowrap;
   }
   .fuel-panel { display: flex; flex-direction: column; gap: 6px; }
@@ -151,11 +165,11 @@ const CARD_STYLE = `
     flex: 1;
     min-height: 86px;
     width: 100%;
-    border: 1px solid rgba(255,255,255,0.16);
+    border: 1px solid var(--dh-border-soft);
     border-radius: 11px;
     overflow: hidden;
-    background: rgba(0,0,0,0.28);
-    box-shadow: inset 0 0 18px rgba(0,0,0,0.4);
+    background: color-mix(in srgb, var(--dh-panel-bg), black 12%);
+    box-shadow: inset 0 0 16px color-mix(in srgb, var(--dh-text), transparent 95%);
     display: grid;
     place-items: center;
   }
@@ -163,19 +177,19 @@ const CARD_STYLE = `
     position: absolute;
     left: 0; right: 0; bottom: 0;
     height: 0%;
-    background: linear-gradient(180deg, rgba(52,169,255,0.26), rgba(52,169,255,0.66));
-    border-top: 2px solid #7cd0ff;
-    box-shadow: 0 -2px 18px rgba(52,169,255,0.38);
+    background: linear-gradient(to top, color-mix(in srgb, var(--dh-fuel), black 30%), color-mix(in srgb, var(--dh-fuel), white 5%));
+    border-top: 2px solid color-mix(in srgb, var(--dh-fuel), white 18%);
+    box-shadow: 0 -2px 14px color-mix(in srgb, var(--dh-fuel), transparent 78%);
     transition: height .5s cubic-bezier(.4,0,.2,1), background .2s ease, border-color .2s ease;
   }
   .fuel-fill.low {
-    background: linear-gradient(180deg, rgba(255,58,48,0.24), rgba(255,58,48,0.62));
-    border-top-color: #ff7a72;
+    background: linear-gradient(to top, color-mix(in srgb, var(--error-color, #db4437), black 25%), color-mix(in srgb, var(--error-color, #db4437), white 8%));
+    border-top-color: color-mix(in srgb, var(--error-color, #db4437), white 15%);
   }
-  .fuel-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.75); }
+  .fuel-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 8px color-mix(in srgb, var(--dh-card-bg), black 35%); }
   .fuel-litres { font-size: 17px; font-weight: 460; letter-spacing: -0.02em; line-height: 1; }
-  .fuel-litres span { font-size: 10px; margin-left: 1px; color: #dfefff; }
-  .fuel-percent { margin-top: 4px; font-size: 10px; color: #d9e7f7; }
+  .fuel-litres span { font-size: 10px; margin-left: 1px; color: var(--dh-text-muted); }
+  .fuel-percent { margin-top: 4px; font-size: 10px; color: var(--dh-text-muted); }
   .flame-panel {
     position: relative;
     display: grid;
@@ -192,7 +206,7 @@ const CARD_STYLE = `
     letter-spacing: -0.02em;
     line-height: 1;
   }
-  .temp-value span { font-size: 12px; color: #d7d7d7; margin-left: 2px; }
+  .temp-value span { font-size: 12px; color: var(--dh-text-muted); margin-left: 2px; }
   .flame-stage {
     position: relative;
     min-height: 0;
@@ -205,7 +219,7 @@ const CARD_STYLE = `
     height: calc(28px + var(--flame-duty, 0) * 40px);
     position: relative;
     opacity: calc(.44 + var(--flame-duty, 0) * .56);
-    filter: drop-shadow(0 0 calc(5px + var(--flame-duty, 0) * 13px) rgba(255,92,24,.42));
+    filter: drop-shadow(0 0 calc(5px + var(--flame-duty, 0) * 13px) color-mix(in srgb, var(--dh-heater), transparent 82%));
     transform-origin: 50% 100%;
     animation: flame-sway calc(1.9s - var(--flame-duty, 0) * .85s) ease-in-out infinite alternate;
   }
@@ -220,23 +234,23 @@ const CARD_STYLE = `
     transform-origin: 50% 82%;
   }
   .flame::before {
-    background: linear-gradient(135deg, #ffef8a 0%, #ffae31 34%, #ff6823 64%, rgba(180,35,19,.12) 100%);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--dh-heater), white 38%) 0%, color-mix(in srgb, var(--dh-heater), white 14%) 38%, var(--dh-heater) 68%, color-mix(in srgb, var(--dh-heater), transparent 88%) 100%);
   }
   .flame::after {
     inset: auto 26% 0 26%;
     height: 68%;
-    background: linear-gradient(135deg, #fff6b2 0%, #ffd55e 48%, rgba(255,140,34,.35) 100%);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--dh-heater), white 48%) 0%, color-mix(in srgb, var(--dh-heater), white 22%) 52%, color-mix(in srgb, var(--dh-heater), transparent 65%) 100%);
     animation: flame-core .78s ease-in-out infinite alternate;
   }
   .ember {
     width: 54px;
     height: 7px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(255,170,45,.42), rgba(255,85,24,.10) 60%, transparent 72%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--dh-heater), transparent 64%), color-mix(in srgb, var(--dh-heater), transparent 88%) 60%, transparent 72%);
     margin-top: -2px;
   }
   .center-state {
-    color: #d0d0d0;
+    color: var(--dh-text-muted);
     font-size: 10px;
     font-weight: 620;
     min-height: 13px;
@@ -246,23 +260,23 @@ const CARD_STYLE = `
   .set-duty {
     flex: 1;
     min-height: 52px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid var(--dh-border-soft);
     border-radius: 11px;
-    background: rgba(0,0,0,0.18);
+    background: var(--dh-panel-bg);
     display: grid;
     place-items: center;
     cursor: pointer;
   }
   .set-duty-value { font-size: 28px; font-weight: 340; line-height: 1; letter-spacing: -0.02em; }
-  .set-duty-label { margin-top: 4px; color: #c6c6c6; font-size: 10px; letter-spacing: .05em; font-weight: 700; }
+  .set-duty-label { margin-top: 4px; color: var(--dh-text-muted); font-size: 10px; letter-spacing: .05em; font-weight: 700; }
   .stepper { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .step-btn {
     height: 26px;
     min-width: 0;
     border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.025);
-    color: #efefef;
+    border: 1px solid var(--dh-border-soft);
+    background: var(--dh-panel-bg);
+    color: var(--dh-text);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -270,8 +284,8 @@ const CARD_STYLE = `
     user-select: none;
     transition: background .12s ease, border-color .12s ease;
   }
-  .step-btn:active { background: rgba(255,138,34,.15); border-color: rgba(255,138,34,.48); }
-  .step-btn svg { width: 17px; height: 17px; color: #ff9b31; }
+  .step-btn:active { background: color-mix(in srgb, var(--dh-heater), transparent 86%); border-color: color-mix(in srgb, var(--dh-heater), transparent 60%); }
+  .step-btn svg { width: 17px; height: 17px; color: var(--dh-heater); }
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -280,9 +294,9 @@ const CARD_STYLE = `
   }
   .stat {
     min-width: 0;
-    border: 1px solid rgba(255,255,255,0.10);
+    border: 1px solid var(--dh-border-soft);
     border-radius: 11px;
-    background: rgba(0,0,0,0.14);
+    background: var(--dh-panel-bg);
     padding: 7px 5px;
     display: grid;
     grid-template-columns: 1fr;
@@ -292,7 +306,7 @@ const CARD_STYLE = `
     cursor: pointer;
   }
   .stat svg { display: none; }
-  .stat-label { color: #a9a9a9; font-size: 10px; letter-spacing: .06em; font-weight: 730; }
+  .stat-label { color: var(--dh-text-muted); font-size: 10px; letter-spacing: .06em; font-weight: 730; }
   .stat-value { font-size: 11px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @keyframes flame-sway {
     0% { transform: translateX(-1px) scaleX(.95) rotate(-2deg); }
@@ -544,24 +558,24 @@ class DieselHeaterCard extends HTMLElement {
     const raw = String(value || "").trim();
     const s = raw.toLowerCase();
     if (!raw || s === "unavailable" || s === "unknown") {
-      return { label: "Unavailable", fg: "#d1d1d1", bg: "rgba(255,255,255,.045)", border: "rgba(255,255,255,.14)" };
+      return { label: "Unavailable", fg: "var(--dh-text-dim)", bg: "var(--dh-panel-bg)", border: "var(--dh-border-soft)" };
     }
     if (s === "off" || s.includes("standby")) {
-      return { label: raw, fg: "#d8d8d8", bg: "rgba(255,255,255,.045)", border: "rgba(255,255,255,.14)" };
+      return { label: raw, fg: "var(--dh-text-muted)", bg: "var(--dh-panel-bg)", border: "var(--dh-border-soft)" };
     }
     if (s.includes("fault") || s.includes("error") || s.includes("alarm")) {
-      return { label: raw, fg: "#ffd0cc", bg: "rgba(255,58,48,.18)", border: "rgba(255,58,48,.48)" };
+      return { label: raw, fg: "color-mix(in srgb, var(--error-color, #db4437), white 25%)", bg: "color-mix(in srgb, var(--error-color, #db4437), transparent 84%)", border: "color-mix(in srgb, var(--error-color, #db4437), transparent 62%)" };
     }
     if (s.includes("cool")) {
-      return { label: raw, fg: "#d8efff", bg: "rgba(52,169,255,.15)", border: "rgba(52,169,255,.42)" };
+      return { label: raw, fg: "color-mix(in srgb, var(--dh-fan), white 25%)", bg: "color-mix(in srgb, var(--dh-fan), transparent 86%)", border: "color-mix(in srgb, var(--dh-fan), transparent 65%)" };
     }
     if (s.includes("start") || s.includes("glow") || s.includes("prime") || s.includes("pump")) {
-      return { label: raw, fg: "#ffedbf", bg: "rgba(255,196,0,.16)", border: "rgba(255,196,0,.42)" };
+      return { label: raw, fg: "color-mix(in srgb, var(--dh-heater), white 25%)", bg: "color-mix(in srgb, var(--dh-heater), transparent 84%)", border: "color-mix(in srgb, var(--dh-heater), transparent 62%)" };
     }
     if (s.includes("run") || s.includes("heat") || s.includes("on")) {
-      return { label: raw, fg: "#d9ffd3", bg: "rgba(61,220,104,.13)", border: "rgba(61,220,104,.38)" };
+      return { label: raw, fg: "color-mix(in srgb, var(--dh-ok), white 25%)", bg: "color-mix(in srgb, var(--dh-ok), transparent 82%)", border: "color-mix(in srgb, var(--dh-ok), transparent 62%)" };
     }
-    return { label: raw, fg: "#ffdcb5", bg: "rgba(255,138,34,.14)", border: "rgba(255,138,34,.38)" };
+    return { label: raw, fg: "color-mix(in srgb, var(--dh-heater), white 25%)", bg: "color-mix(in srgb, var(--dh-heater), transparent 86%)", border: "color-mix(in srgb, var(--dh-heater), transparent 65%)" };
   }
 }
 
@@ -645,7 +659,7 @@ class DieselHeaterCardEditor extends HTMLElement {
         .editor { display: grid; gap: 12px; padding: 12px 0; }
         .field { display: grid; gap: 6px; }
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .section-title { font-size: 15px; font-weight: 700; margin-top: 10px; border-top: 1px solid var(--divider-color, #444); padding-top: 12px; }
+        .section-title { font-size: 15px; font-weight: 700; margin-top: 10px; border-top: 1px solid var(--divider-color); padding-top: 12px; }
         label { font-size: 13px; font-weight: 600; }
         select, input[type="number"] { padding: 8px; font: inherit; width: 100%; box-sizing: border-box; }
       </style>

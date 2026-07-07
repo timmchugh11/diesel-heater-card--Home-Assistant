@@ -1,0 +1,4 @@
+.alpackages/
+node_modules/
+*.log
+*.png

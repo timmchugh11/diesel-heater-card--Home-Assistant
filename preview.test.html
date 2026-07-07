@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; width: 100vw; background: #080808; padding: 20px; font-family: system-ui, sans-serif; }
+  #wrap { max-width: 1040px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<script type="module">
+  import "./diesel-heater-card.js";
+
+  const qp = new URLSearchParams(location.search);
+  const state = qp.get("state") ?? "Off";
+  const duty = qp.get("duty") ?? "4";
+  const setDuty = qp.get("set") ?? "9";
+  const fuel = qp.get("fuel") ?? "17.9";
+
+  const hass = {
+    states: {
+      "sensor.heater_chamber": { state: qp.get("temp") ?? "24", attributes: { unit_of_measurement: "°C" } },
+      "sensor.heater_pump": { state: qp.get("pump") ?? "0", attributes: { unit_of_measurement: "Hz" } },
+      "sensor.heater_fan": { state: qp.get("fan") ?? "0", attributes: { unit_of_measurement: "RPM" } },
+      "sensor.heater_duty": { state: duty, attributes: { unit_of_measurement: "%" } },
+      "sensor.heater_state": { state, attributes: {} },
+      "button.heater_power": { state: "unknown", attributes: {} },
+      "button.heater_up": { state: "unknown", attributes: {} },
+      "button.heater_down": { state: "unknown", attributes: {} },
+      "input_number.heater_duty": { state: setDuty, attributes: { min: 1, max: 10, step: 1 } },
+      "input_number.heater_fuel": { state: fuel, attributes: { unit_of_measurement: "L", min: 0, max: 20, step: 0.1 } },
+    },
+    callService: (domain, service, data) => console.log("callService", domain, service, JSON.stringify(data)),
+  };
+
+  const card = document.createElement("diesel-heater-card");
+  card.setConfig({
+    type: "custom:diesel-heater-card",
+    entity_state: "sensor.heater_state",
+    entity_chamber_temp: "sensor.heater_chamber",
+    entity_fan: "sensor.heater_fan",
+    entity_pump: "sensor.heater_pump",
+    entity_duty: "sensor.heater_duty",
+    entity_power: "button.heater_power",
+    entity_duty_set: "input_number.heater_duty",
+    entity_duty_up: "button.heater_up",
+    entity_duty_down: "button.heater_down",
+    entity_fuel: "input_number.heater_fuel",
+    fuel_max_litres: 20,
+    temp_decimals: 1,
+  });
+  document.getElementById("wrap").appendChild(card);
+  card.hass = hass;
+  window.__cardReady = true;
+</script>
+</body>
+</html>

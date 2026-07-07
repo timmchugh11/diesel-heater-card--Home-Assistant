@@ -1,0 +1,9 @@
+{
+  "name": "diesel-heater-card",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Home Assistant Lovelace custom card for a Chinese diesel night heater: state, fuel, chamber temperature, duty controls and live stats.",
+  "scripts": {
+    "test": "echo \"No automated test suite yet\""
+  }
+}

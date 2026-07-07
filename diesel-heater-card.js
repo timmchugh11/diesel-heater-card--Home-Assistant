@@ -65,32 +65,32 @@ const CARD_STYLE = `
     border: 1px solid rgba(255,255,255,0.12);
     color: #f2f2f2;
     font-family: var(--paper-font-body1_-_font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
-    padding: 18px;
+    padding: 12px;
   }
   .header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 10px;
   }
   .title {
     min-width: 0;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 760;
     letter-spacing: .07em;
   }
-  .title svg { width: 24px; height: 24px; color: #ff8a22; filter: drop-shadow(0 0 10px rgba(255,116,24,.22)); flex: 0 0 auto; }
+  .title svg { width: 21px; height: 21px; color: #ff8a22; filter: drop-shadow(0 0 10px rgba(255,116,24,.22)); flex: 0 0 auto; }
   .state-pill {
     min-width: 86px;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 999px;
-    padding: 7px 12px;
+    padding: 6px 11px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 720;
     color: var(--state-fg, #e8e8e8);
     background: var(--state-bg, rgba(255,255,255,0.04));
@@ -98,7 +98,7 @@ const CARD_STYLE = `
     cursor: pointer;
   }
   .power-btn {
-    height: 38px;
+    height: 34px;
     border-radius: 13px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.03);
@@ -107,8 +107,8 @@ const CARD_STYLE = `
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 0 14px;
-    font-size: 14px;
+    padding: 0 12px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     user-select: none;
@@ -123,7 +123,7 @@ const CARD_STYLE = `
   .main-layout {
     display: grid;
     grid-template-columns: minmax(118px, 158px) minmax(0, 1fr) minmax(128px, 166px);
-    gap: 16px;
+    gap: 10px;
     align-items: stretch;
   }
   .panel {
@@ -131,7 +131,7 @@ const CARD_STYLE = `
     border: 1px solid rgba(255,255,255,0.10);
     border-radius: 18px;
     background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
-    padding: 16px 12px;
+    padding: 10px 9px;
   }
   .panel-title {
     font-size: 12px;
@@ -140,11 +140,11 @@ const CARD_STYLE = `
     text-align: center;
     color: #bdbdbd;
   }
-  .fuel-panel { display: flex; flex-direction: column; gap: 12px; }
+  .fuel-panel { display: flex; flex-direction: column; gap: 8px; }
   .fuel-gauge {
     position: relative;
     flex: 1;
-    min-height: 184px;
+    min-height: 132px;
     width: 100%;
     border: 1px solid rgba(255,255,255,0.16);
     border-radius: 16px;
@@ -168,21 +168,21 @@ const CARD_STYLE = `
     border-top-color: #ff7a72;
   }
   .fuel-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.75); }
-  .fuel-litres { font-size: 31px; font-weight: 380; letter-spacing: -0.03em; line-height: 1; }
+  .fuel-litres { font-size: 27px; font-weight: 380; letter-spacing: -0.03em; line-height: 1; }
   .fuel-litres span { font-size: 14px; margin-left: 3px; color: #dfefff; }
   .fuel-percent { margin-top: 6px; font-size: 12px; color: #b6c4d6; }
   .flame-panel {
     position: relative;
     display: grid;
-    grid-template-rows: auto minmax(142px, 1fr) auto;
+    grid-template-rows: auto minmax(92px, 1fr) auto;
     align-items: center;
     text-align: center;
     overflow: hidden;
   }
   .temp-readout { cursor: pointer; }
   .temp-value {
-    margin-top: 8px;
-    font-size: 48px;
+    margin-top: 4px;
+    font-size: 40px;
     font-weight: 320;
     letter-spacing: -0.03em;
     line-height: 1;
@@ -190,14 +190,14 @@ const CARD_STYLE = `
   .temp-value span { font-size: 20px; color: #d7d7d7; margin-left: 4px; }
   .flame-stage {
     position: relative;
-    min-height: 142px;
+    min-height: 92px;
     display: grid;
     place-items: end center;
-    padding-bottom: 10px;
+    padding-bottom: 4px;
   }
   .flame {
-    width: calc(54px + var(--flame-duty, 0) * 56px);
-    height: calc(42px + var(--flame-duty, 0) * 82px);
+    width: calc(44px + var(--flame-duty, 0) * 42px);
+    height: calc(34px + var(--flame-duty, 0) * 60px);
     position: relative;
     opacity: calc(.44 + var(--flame-duty, 0) * .56);
     filter: drop-shadow(0 0 calc(7px + var(--flame-duty, 0) * 18px) rgba(255,92,24,.42));
@@ -225,7 +225,7 @@ const CARD_STYLE = `
   }
   .ember {
     width: 72px;
-    height: 12px;
+    height: 9px;
     border-radius: 999px;
     background: radial-gradient(circle, rgba(255,170,45,.42), rgba(255,85,24,.10) 60%, transparent 72%);
     margin-top: -2px;
@@ -237,10 +237,10 @@ const CARD_STYLE = `
     min-height: 18px;
     cursor: pointer;
   }
-  .duty-panel { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+  .duty-panel { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
   .set-duty {
     flex: 1;
-    min-height: 126px;
+    min-height: 82px;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 16px;
     background: rgba(0,0,0,0.18);
@@ -248,11 +248,11 @@ const CARD_STYLE = `
     place-items: center;
     cursor: pointer;
   }
-  .set-duty-value { font-size: 54px; font-weight: 320; line-height: 1; letter-spacing: -0.03em; }
-  .set-duty-label { margin-top: 7px; color: #aaa; font-size: 12px; letter-spacing: .06em; font-weight: 700; }
-  .stepper { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .set-duty-value { font-size: 44px; font-weight: 320; line-height: 1; letter-spacing: -0.03em; }
+  .set-duty-label { margin-top: 5px; color: #aaa; font-size: 11px; letter-spacing: .06em; font-weight: 700; }
+  .stepper { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .step-btn {
-    height: 46px;
+    height: 34px;
     border-radius: 13px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.025);
@@ -265,7 +265,7 @@ const CARD_STYLE = `
     transition: background .12s ease, border-color .12s ease;
   }
   .step-btn:active { background: rgba(255,138,34,.15); border-color: rgba(255,138,34,.48); }
-  .step-btn svg { width: 24px; height: 24px; color: #ff9b31; }
+  .step-btn svg { width: 20px; height: 20px; color: #ff9b31; }
   .duty-now {
     text-align: center;
     color: #bdbdbd;
@@ -275,24 +275,24 @@ const CARD_STYLE = `
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 16px;
+    gap: 8px;
+    margin-top: 8px;
   }
   .stat {
     min-width: 0;
     border: 1px solid rgba(255,255,255,0.10);
     border-radius: 14px;
     background: rgba(0,0,0,0.14);
-    padding: 10px 12px;
+    padding: 8px 10px;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 9px;
     cursor: pointer;
   }
-  .stat svg { width: 19px; height: 19px; color: #34a9ff; opacity: .9; }
+  .stat svg { width: 17px; height: 17px; color: #34a9ff; opacity: .9; }
   .stat-label { color: #a9a9a9; font-size: 11px; letter-spacing: .07em; font-weight: 730; }
-  .stat-value { margin-top: 2px; font-size: 17px; font-weight: 560; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat-value { margin-top: 1px; font-size: 15px; font-weight: 560; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @keyframes flame-sway {
     0% { transform: translateX(-1px) scaleX(.95) rotate(-2deg); }
     100% { transform: translateX(1px) scaleX(1.04) rotate(2deg); }
@@ -306,58 +306,61 @@ const CARD_STYLE = `
     .fuel-fill { transition: none; }
   }
   @container (max-width: 720px) {
-    .heater-card { padding: 14px; }
-    .header { gap: 8px; margin-bottom: 12px; }
+    .heater-card { padding: 10px; }
+    .header { gap: 8px; margin-bottom: 8px; }
     .title { font-size: 15px; gap: 7px; }
     .title svg { width: 20px; height: 20px; }
     .state-pill { min-width: 70px; padding: 6px 9px; font-size: 12px; }
     .power-btn { height: 34px; padding: 0 10px; font-size: 12px; border-radius: 11px; }
     .power-btn svg { width: 16px; height: 16px; }
-    .main-layout { gap: 10px; grid-template-columns: minmax(92px, 126px) minmax(0, 1fr) minmax(98px, 130px); }
-    .panel { padding: 12px 8px; border-radius: 15px; }
+    .main-layout { gap: 8px; grid-template-columns: minmax(86px, 116px) minmax(0, 1fr) minmax(92px, 122px); }
+    .panel { padding: 9px 7px; border-radius: 14px; }
     .panel-title { font-size: 11px; letter-spacing: .06em; }
-    .fuel-gauge { min-height: 140px; border-radius: 13px; }
+    .fuel-gauge { min-height: 112px; border-radius: 13px; }
     .fuel-litres { font-size: 24px; }
     .fuel-litres span, .fuel-percent { font-size: 11px; }
-    .temp-value { font-size: 36px; }
+    .temp-value { font-size: 32px; }
     .temp-value span { font-size: 15px; }
-    .flame-panel { grid-template-rows: auto minmax(116px, 1fr) auto; }
-    .flame-stage { min-height: 116px; }
-    .set-duty { min-height: 98px; }
-    .set-duty-value { font-size: 42px; }
+    .flame-panel { grid-template-rows: auto minmax(82px, 1fr) auto; }
+    .flame-stage { min-height: 82px; }
+    .set-duty { min-height: 72px; }
+    .set-duty-value { font-size: 38px; }
     .stepper { gap: 8px; }
-    .step-btn { height: 40px; border-radius: 11px; }
-    .stats { gap: 8px; margin-top: 10px; }
-    .stat { padding: 8px 9px; border-radius: 12px; gap: 7px; }
+    .step-btn { height: 32px; border-radius: 11px; }
+    .stats { gap: 7px; margin-top: 8px; }
+    .stat { padding: 7px 8px; border-radius: 12px; gap: 6px; }
     .stat svg { width: 16px; height: 16px; }
     .stat-value { font-size: 14px; }
     .stat-label { font-size: 10px; }
   }
   @container (max-width: 500px) {
-    .heater-card { padding: 11px; }
-    .header { grid-template-columns: minmax(0, 1fr) auto; }
+    .heater-card { padding: 8px; }
+    .header { grid-template-columns: minmax(0, 1fr) auto auto; margin-bottom: 7px; }
     .title { font-size: 13px; letter-spacing: .04em; }
-    .state-pill { order: 3; grid-column: 1 / -1; width: auto; }
+    .state-pill { order: 0; grid-column: auto; width: auto; min-width: 58px; padding: 5px 7px; }
     .power-btn span { display: none; }
     .power-btn { width: 36px; padding: 0; }
-    .main-layout { gap: 7px; grid-template-columns: minmax(0, 1fr); }
-    .flame-panel { grid-column: 1; grid-row: 1; }
-    .fuel-panel { grid-column: 1; grid-row: 2; }
-    .duty-panel { grid-column: 1; grid-row: 3; }
-    .panel { padding: 10px 6px; border-radius: 13px; }
-    .fuel-gauge { min-height: 112px; }
-    .fuel-litres { font-size: 20px; }
+    .main-layout { gap: 6px; grid-template-columns: minmax(76px, .85fr) minmax(0, 1.3fr) minmax(76px, .85fr); }
+    .flame-panel { grid-column: auto; grid-row: auto; }
+    .fuel-panel { grid-column: auto; grid-row: auto; }
+    .duty-panel { grid-column: auto; grid-row: auto; }
+    .panel { padding: 8px 5px; border-radius: 12px; }
+    .fuel-gauge { min-height: 92px; }
+    .fuel-litres { font-size: 18px; }
     .fuel-percent { margin-top: 4px; }
-    .temp-value { font-size: 29px; }
-    .flame-panel { grid-template-rows: auto minmax(94px, 1fr) auto; }
-    .flame-stage { min-height: 94px; }
-    .flame { width: calc(40px + var(--flame-duty, 0) * 42px); height: calc(34px + var(--flame-duty, 0) * 58px); }
-    .set-duty { min-height: 76px; }
-    .set-duty-value { font-size: 34px; }
+    .temp-value { font-size: 27px; }
+    .flame-panel { grid-template-rows: auto minmax(70px, 1fr) auto; }
+    .flame-stage { min-height: 70px; }
+    .flame { width: calc(34px + var(--flame-duty, 0) * 34px); height: calc(30px + var(--flame-duty, 0) * 46px); }
+    .set-duty { min-height: 58px; }
+    .set-duty-value { font-size: 30px; }
     .set-duty-label, .duty-now, .center-state { font-size: 10px; }
-    .step-btn { height: 34px; }
-    .step-btn svg { width: 20px; height: 20px; }
-    .stats { grid-template-columns: 1fr; }
+    .step-btn { height: 28px; }
+    .step-btn svg { width: 18px; height: 18px; }
+    .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat { padding: 7px 5px; grid-template-columns: 1fr; gap: 3px; text-align: center; }
+    .stat svg { display: none; }
+    .stat-value { font-size: 12px; }
   }
 `;
 
@@ -396,7 +399,7 @@ class DieselHeaterCard extends HTMLElement {
     this.config = normalizeConfig(config);
   }
 
-  getCardSize() { return 5; }
+  getCardSize() { return 4; }
 
   set hass(hass) {
     this._hass = hass;

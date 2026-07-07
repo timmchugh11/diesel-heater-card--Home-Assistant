@@ -54,6 +54,9 @@ const CARD_STYLE = `
   .heater-card {
     position: relative;
     width: 100%;
+    min-height: 330px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
     background:
@@ -123,6 +126,7 @@ const CARD_STYLE = `
     grid-template-columns: 68px minmax(0, 1fr) 68px;
     gap: 6px;
     align-items: stretch;
+    min-height: 0;
   }
   .panel {
     min-width: 0;
@@ -173,7 +177,7 @@ const CARD_STYLE = `
   .flame-panel {
     position: relative;
     display: grid;
-    grid-template-rows: auto minmax(64px, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     align-items: center;
     text-align: center;
     overflow: hidden;
@@ -189,9 +193,9 @@ const CARD_STYLE = `
   .temp-value span { font-size: 12px; color: #d7d7d7; margin-left: 2px; }
   .flame-stage {
     position: relative;
-    min-height: 64px;
+    min-height: 0;
     display: grid;
-    place-items: end center;
+    place-items: center;
     padding-bottom: 3px;
   }
   .flame {
@@ -266,13 +270,6 @@ const CARD_STYLE = `
   }
   .step-btn:active { background: rgba(255,138,34,.15); border-color: rgba(255,138,34,.48); }
   .step-btn svg { width: 17px; height: 17px; color: #ff9b31; }
-  .duty-now {
-    text-align: center;
-    color: #d0d0d0;
-    font-size: 10px;
-    line-height: 1.25;
-    white-space: nowrap;
-  }
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -396,7 +393,6 @@ class DieselHeaterCard extends HTMLElement {
               <button class="step-btn" type="button" data-step="up" aria-label="Increase heat level">${ICON_UP}</button>
               <button class="step-btn" type="button" data-step="down" aria-label="Decrease heat level">${ICON_DOWN}</button>
             </div>
-            <div class="duty-now">now -</div>
           </aside>
         </section>
         <section class="stats">
@@ -422,7 +418,6 @@ class DieselHeaterCard extends HTMLElement {
       centerState: root.querySelector(".center-state"),
       dutySet: root.querySelector(".set-duty"),
       dutySetValue: root.querySelector(".set-duty-value"),
-      dutyNow: root.querySelector(".duty-now"),
       stepUp: root.querySelector('[data-step="up"]'),
       stepDown: root.querySelector('[data-step="down"]'),
       stats: {
@@ -470,7 +465,6 @@ class DieselHeaterCard extends HTMLElement {
     const dutyPct = duty == null ? 0 : clamp(duty, 0, 100);
     this._el.card.style.setProperty("--flame-duty", String(dutyPct / 100));
     this._el.stats.duty.textContent = duty == null ? "-" : `${this._fmt(duty, 0)} %`;
-    this._el.dutyNow.textContent = duty == null ? "now -" : `now ${this._fmt(duty, 0)}%`;
 
     const setDuty = this._stateNum(this.config.entity_duty_set);
     this._el.dutySetValue.textContent = setDuty == null ? "-" : this._fmt(setDuty, this._setDutyDecimals());

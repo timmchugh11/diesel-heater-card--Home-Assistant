@@ -63,7 +63,7 @@ const CARD_STYLE = `
     --dh-accent: var(--accent-color);
     --dh-heater: var(--state-climate-heat-color, var(--accent-color));
     --dh-fan: var(--state-fan-on-color, var(--accent-color));
-    --dh-fuel: var(--primary-color);
+    --dh-fuel: #ff9800;
     --dh-ok: var(--state-binary_sensor-on-color, var(--success-color, #7fa66a));
     position: relative;
     width: 100%;

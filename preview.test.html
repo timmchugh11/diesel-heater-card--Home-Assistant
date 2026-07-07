@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; width: 100vw; background: #080808; padding: 20px; font-family: system-ui, sans-serif; }
-  #wrap { max-width: 1040px; margin: 0 auto; }
+  html, body { overflow-x: hidden; }
+  body { margin: 0; background: #080808; padding: 20px; font-family: system-ui, sans-serif; }
+  #wrap { width: 100%; max-width: 1040px; margin: 0 auto; }
+  @media (max-width: 500px) {
+    body { padding: 8px; }
+    #wrap { width: calc(100vw - 16px); }
+  }
 </style>
 </head>
 <body>

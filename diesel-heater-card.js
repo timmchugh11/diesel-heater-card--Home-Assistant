@@ -45,7 +45,9 @@ function escapeHtml(value) {
 
 const CARD_STYLE = `
   :host { display: block; }
+  *, *::before, *::after { box-sizing: border-box; }
   ha-card {
+    display: block;
     --ha-card-border-width: 0;
     --ha-card-background: transparent;
     --ha-card-box-shadow: none;
@@ -53,6 +55,7 @@ const CARD_STYLE = `
   }
   .heater-card {
     position: relative;
+    width: 100%;
     container-type: inline-size;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
@@ -337,10 +340,10 @@ const CARD_STYLE = `
     .state-pill { order: 3; grid-column: 1 / -1; width: auto; }
     .power-btn span { display: none; }
     .power-btn { width: 36px; padding: 0; }
-    .main-layout { gap: 7px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .flame-panel { grid-column: 1 / -1; grid-row: 1; }
+    .main-layout { gap: 7px; grid-template-columns: minmax(0, 1fr); }
+    .flame-panel { grid-column: 1; grid-row: 1; }
     .fuel-panel { grid-column: 1; grid-row: 2; }
-    .duty-panel { grid-column: 2; grid-row: 2; }
+    .duty-panel { grid-column: 1; grid-row: 3; }
     .panel { padding: 10px 6px; border-radius: 13px; }
     .fuel-gauge { min-height: 112px; }
     .fuel-litres { font-size: 20px; }

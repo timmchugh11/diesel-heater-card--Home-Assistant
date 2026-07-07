@@ -44,6 +44,7 @@ entity_duty_down: button.chinese_night_heater_down
 entity_fuel: input_number.diesel_heater_fuel_level
 fuel_max_litres: 20
 temp_decimals: 1
+flame_max_temp: 160
 ```
 
 ## Options
@@ -61,6 +62,7 @@ temp_decimals: 1
 | `entity_fuel` | — | Fuel remaining `input_number`, shown in litres. |
 | `fuel_max_litres` | `20` | Fuel level that represents a full tank. |
 | `temp_decimals` | `1` | Chamber temperature decimal places. |
+| `flame_max_temp` | `160` | Chamber temperature in °C that makes the flame render at full size. |
 
 ## Development
 

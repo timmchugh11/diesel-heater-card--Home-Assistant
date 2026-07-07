@@ -15,6 +15,7 @@ const DEFAULT_CONFIG = {
   entity_fuel: "",
   fuel_max_litres: 20,
   temp_decimals: 1,
+  flame_max_temp: 160,
 };
 
 function normalizeConfig(config) {
@@ -24,6 +25,7 @@ function normalizeConfig(config) {
     ...c,
     fuel_max_litres: Math.max(0.1, Number(c.fuel_max_litres ?? DEFAULT_CONFIG.fuel_max_litres) || DEFAULT_CONFIG.fuel_max_litres),
     temp_decimals: Math.max(0, Number(c.temp_decimals ?? DEFAULT_CONFIG.temp_decimals) || 0),
+    flame_max_temp: Math.max(1, Number(c.flame_max_temp ?? DEFAULT_CONFIG.flame_max_temp) || DEFAULT_CONFIG.flame_max_temp),
   };
 }
 
@@ -460,10 +462,10 @@ class DieselHeaterCard extends HTMLElement {
 
     const temp = this._stateNum(this.config.entity_chamber_temp);
     this._el.tempValue.innerHTML = `${temp == null ? "-" : this._fmt(temp, this.config.temp_decimals)}<span>°C</span>`;
+    const flameTempPct = temp == null ? 0 : clamp(temp / this.config.flame_max_temp, 0, 1);
+    this._el.card.style.setProperty("--flame-duty", String(flameTempPct));
 
     const duty = this._stateNum(this.config.entity_duty);
-    const dutyPct = duty == null ? 0 : clamp(duty, 0, 100);
-    this._el.card.style.setProperty("--flame-duty", String(dutyPct / 100));
     this._el.stats.duty.textContent = duty == null ? "-" : `${this._fmt(duty, 0)} %`;
 
     const setDuty = this._stateNum(this.config.entity_duty_set);
@@ -662,12 +664,15 @@ class DieselHeaterCardEditor extends HTMLElement {
         ${this._select("entity_duty_up", "Duty up button", "button", "Select button")}
         ${this._select("entity_duty_down", "Duty down button", "button", "Select button")}
 
+        <div class="section-title">Temperature</div>
+        <div class="row">
+          ${this._number("temp_decimals", "Temperature decimals", "1")}
+          ${this._number("flame_max_temp", "Flame max temp (°C)", "1")}
+        </div>
+
         <div class="section-title">Fuel</div>
         ${this._select("entity_fuel", "Fuel remaining", "input_number", "Select input number")}
-        <div class="row">
-          ${this._number("fuel_max_litres", "Full tank litres", "0.1")}
-          ${this._number("temp_decimals", "Temperature decimals", "1")}
-        </div>
+        ${this._number("fuel_max_litres", "Full tank litres", "0.1")}
       </div>
     `;
 

@@ -15,7 +15,6 @@ const DEFAULT_CONFIG = {
   entity_fuel: "",
   fuel_max_litres: 20,
   temp_decimals: 1,
-  duty_control_mode: "input_number", // "input_number" | "buttons"
 };
 
 function normalizeConfig(config) {
@@ -25,7 +24,6 @@ function normalizeConfig(config) {
     ...c,
     fuel_max_litres: Math.max(0.1, Number(c.fuel_max_litres ?? DEFAULT_CONFIG.fuel_max_litres) || DEFAULT_CONFIG.fuel_max_litres),
     temp_decimals: Math.max(0, Number(c.temp_decimals ?? DEFAULT_CONFIG.temp_decimals) || 0),
-    duty_control_mode: c.duty_control_mode === "buttons" ? "buttons" : "input_number",
   };
 }
 
@@ -56,7 +54,6 @@ const CARD_STYLE = `
   .heater-card {
     position: relative;
     width: 100%;
-    max-width: 350px;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
     background:
@@ -491,23 +488,25 @@ class DieselHeaterCard extends HTMLElement {
   }
 
   _changeDuty(direction) {
-    if (this.config.duty_control_mode === "buttons") {
-      const entity = direction > 0 ? this.config.entity_duty_up : this.config.entity_duty_down;
-      if (entity) this._hass?.callService("button", "press", { entity_id: entity });
-      return;
-    }
-
     const entity = this.config.entity_duty_set;
     const state = this._hass?.states?.[entity];
-    if (!entity || !state) return;
-    const attrs = state.attributes || {};
-    const min = Number.isFinite(Number(attrs.min)) ? Number(attrs.min) : 0;
-    const max = Number.isFinite(Number(attrs.max)) ? Number(attrs.max) : 100;
-    const step = Number.isFinite(Number(attrs.step)) && Number(attrs.step) > 0 ? Number(attrs.step) : 1;
-    const current = this._stateNum(entity);
-    if (current == null) return;
-    const next = clamp(current + direction * step, min, max);
-    this._hass?.callService("input_number", "set_value", { entity_id: entity, value: Number(next.toFixed(4)) });
+    if (entity && state) {
+      const attrs = state.attributes || {};
+      const min = Number.isFinite(Number(attrs.min)) ? Number(attrs.min) : 0;
+      const max = Number.isFinite(Number(attrs.max)) ? Number(attrs.max) : 100;
+      const step = Number.isFinite(Number(attrs.step)) && Number(attrs.step) > 0 ? Number(attrs.step) : 1;
+      const current = this._stateNum(entity);
+      if (current != null) {
+        const next = clamp(current + direction * step, min, max);
+        if (next !== current) {
+          this._hass?.callService("input_number", "set_value", { entity_id: entity, value: Number(next.toFixed(4)) });
+        }
+        return;
+      }
+    }
+
+    const fallback = direction > 0 ? this.config.entity_duty_up : this.config.entity_duty_down;
+    if (fallback) this._hass?.callService("button", "press", { entity_id: fallback });
   }
 
   _moreInfo(entityId) {
@@ -658,14 +657,6 @@ class DieselHeaterCardEditor extends HTMLElement {
         <div class="section-title">Status and controls</div>
         ${this._select("entity_state", "Heater state", "sensor", "Select sensor")}
         ${this._select("entity_power", "Power button", "button", "Select button")}
-        <div class="field">
-          <label for="f-duty_control_mode">Duty control</label>
-          <select id="f-duty_control_mode" data-key="duty_control_mode">
-            <option value="input_number"${this._config.duty_control_mode !== "buttons" ? " selected" : ""}>Set input number directly</option>
-            <option value="buttons"${this._config.duty_control_mode === "buttons" ? " selected" : ""}>Press heater up/down buttons</option>
-          </select>
-        </div>
-
         <div class="section-title">Readouts</div>
         ${this._select("entity_chamber_temp", "Chamber temperature", "sensor", "Select sensor")}
         ${this._select("entity_fan", "Fan speed", "sensor", "Select sensor")}

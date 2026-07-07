@@ -56,7 +56,7 @@ const CARD_STYLE = `
   .heater-card {
     position: relative;
     width: 100%;
-    container-type: inline-size;
+    max-width: 350px;
     overflow: hidden;
     border-radius: var(--ha-card-border-radius, 12px);
     background:
@@ -65,56 +65,57 @@ const CARD_STYLE = `
     border: 1px solid rgba(255,255,255,0.12);
     color: #f2f2f2;
     font-family: var(--paper-font-body1_-_font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
-    padding: 12px;
+    padding: 8px;
   }
   .header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 6px;
+    margin-bottom: 7px;
   }
   .title {
     min-width: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 16px;
+    gap: 6px;
+    font-size: 13px;
     font-weight: 760;
-    letter-spacing: .07em;
+    letter-spacing: .04em;
+    white-space: nowrap;
   }
-  .title svg { width: 21px; height: 21px; color: #ff8a22; filter: drop-shadow(0 0 10px rgba(255,116,24,.22)); flex: 0 0 auto; }
+  .title svg { width: 17px; height: 17px; color: #ff8a22; filter: drop-shadow(0 0 8px rgba(255,116,24,.22)); flex: 0 0 auto; }
   .state-pill {
-    min-width: 86px;
+    min-width: 58px;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 999px;
-    padding: 6px 11px;
+    padding: 5px 7px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 720;
     color: var(--state-fg, #e8e8e8);
     background: var(--state-bg, rgba(255,255,255,0.04));
     border-color: var(--state-border, rgba(255,255,255,0.12));
     cursor: pointer;
+    white-space: nowrap;
   }
   .power-btn {
-    height: 34px;
-    border-radius: 13px;
+    width: 34px;
+    height: 30px;
+    border-radius: 11px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.03);
     color: #efefef;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 0 12px;
-    font-size: 13px;
-    font-weight: 700;
+    padding: 0;
     cursor: pointer;
     user-select: none;
     transition: background .14s ease, border-color .14s ease, color .14s ease;
   }
-  .power-btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+  .power-btn span { display: none; }
+  .power-btn svg { width: 17px; height: 17px; flex: 0 0 auto; }
   .power-btn.active {
     color: #ffd6a3;
     background: rgba(255,116,24,.15);
@@ -122,35 +123,36 @@ const CARD_STYLE = `
   }
   .main-layout {
     display: grid;
-    grid-template-columns: minmax(118px, 158px) minmax(0, 1fr) minmax(128px, 166px);
-    gap: 10px;
+    grid-template-columns: 68px minmax(0, 1fr) 68px;
+    gap: 6px;
     align-items: stretch;
   }
   .panel {
     min-width: 0;
     border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 18px;
+    border-radius: 12px;
     background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
-    padding: 10px 9px;
+    padding: 8px 5px;
   }
   .panel-title {
-    font-size: 12px;
+    font-size: 9px;
     font-weight: 760;
-    letter-spacing: .09em;
+    letter-spacing: .06em;
     text-align: center;
-    color: #bdbdbd;
+    color: #d2d2d2;
+    white-space: nowrap;
   }
-  .fuel-panel { display: flex; flex-direction: column; gap: 8px; }
+  .fuel-panel { display: flex; flex-direction: column; gap: 6px; }
   .fuel-gauge {
     position: relative;
     flex: 1;
-    min-height: 132px;
+    min-height: 86px;
     width: 100%;
     border: 1px solid rgba(255,255,255,0.16);
-    border-radius: 16px;
+    border-radius: 11px;
     overflow: hidden;
     background: rgba(0,0,0,0.28);
-    box-shadow: inset 0 0 22px rgba(0,0,0,0.4);
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.4);
     display: grid;
     place-items: center;
   }
@@ -160,7 +162,7 @@ const CARD_STYLE = `
     height: 0%;
     background: linear-gradient(180deg, rgba(52,169,255,0.26), rgba(52,169,255,0.66));
     border-top: 2px solid #7cd0ff;
-    box-shadow: 0 -2px 26px rgba(52,169,255,0.38);
+    box-shadow: 0 -2px 18px rgba(52,169,255,0.38);
     transition: height .5s cubic-bezier(.4,0,.2,1), background .2s ease, border-color .2s ease;
   }
   .fuel-fill.low {
@@ -168,39 +170,39 @@ const CARD_STYLE = `
     border-top-color: #ff7a72;
   }
   .fuel-value { position: relative; z-index: 1; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.75); }
-  .fuel-litres { font-size: 27px; font-weight: 380; letter-spacing: -0.03em; line-height: 1; }
-  .fuel-litres span { font-size: 14px; margin-left: 3px; color: #dfefff; }
-  .fuel-percent { margin-top: 6px; font-size: 12px; color: #b6c4d6; }
+  .fuel-litres { font-size: 17px; font-weight: 460; letter-spacing: -0.02em; line-height: 1; }
+  .fuel-litres span { font-size: 10px; margin-left: 1px; color: #dfefff; }
+  .fuel-percent { margin-top: 4px; font-size: 10px; color: #d9e7f7; }
   .flame-panel {
     position: relative;
     display: grid;
-    grid-template-rows: auto minmax(92px, 1fr) auto;
+    grid-template-rows: auto minmax(64px, 1fr) auto;
     align-items: center;
     text-align: center;
     overflow: hidden;
   }
   .temp-readout { cursor: pointer; }
   .temp-value {
-    margin-top: 4px;
-    font-size: 40px;
-    font-weight: 320;
-    letter-spacing: -0.03em;
+    margin-top: 3px;
+    font-size: 25px;
+    font-weight: 330;
+    letter-spacing: -0.02em;
     line-height: 1;
   }
-  .temp-value span { font-size: 20px; color: #d7d7d7; margin-left: 4px; }
+  .temp-value span { font-size: 12px; color: #d7d7d7; margin-left: 2px; }
   .flame-stage {
     position: relative;
-    min-height: 92px;
+    min-height: 64px;
     display: grid;
     place-items: end center;
-    padding-bottom: 4px;
+    padding-bottom: 3px;
   }
   .flame {
-    width: calc(44px + var(--flame-duty, 0) * 42px);
-    height: calc(34px + var(--flame-duty, 0) * 60px);
+    width: calc(30px + var(--flame-duty, 0) * 30px);
+    height: calc(28px + var(--flame-duty, 0) * 40px);
     position: relative;
     opacity: calc(.44 + var(--flame-duty, 0) * .56);
-    filter: drop-shadow(0 0 calc(7px + var(--flame-duty, 0) * 18px) rgba(255,92,24,.42));
+    filter: drop-shadow(0 0 calc(5px + var(--flame-duty, 0) * 13px) rgba(255,92,24,.42));
     transform-origin: 50% 100%;
     animation: flame-sway calc(1.9s - var(--flame-duty, 0) * .85s) ease-in-out infinite alternate;
   }
@@ -224,36 +226,37 @@ const CARD_STYLE = `
     animation: flame-core .78s ease-in-out infinite alternate;
   }
   .ember {
-    width: 72px;
-    height: 9px;
+    width: 54px;
+    height: 7px;
     border-radius: 999px;
     background: radial-gradient(circle, rgba(255,170,45,.42), rgba(255,85,24,.10) 60%, transparent 72%);
     margin-top: -2px;
   }
   .center-state {
-    color: #bcbcbc;
-    font-size: 13px;
+    color: #d0d0d0;
+    font-size: 10px;
     font-weight: 620;
-    min-height: 18px;
+    min-height: 13px;
     cursor: pointer;
   }
-  .duty-panel { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+  .duty-panel { display: flex; flex-direction: column; gap: 7px; align-items: stretch; }
   .set-duty {
     flex: 1;
-    min-height: 82px;
+    min-height: 52px;
     border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
+    border-radius: 11px;
     background: rgba(0,0,0,0.18);
     display: grid;
     place-items: center;
     cursor: pointer;
   }
-  .set-duty-value { font-size: 44px; font-weight: 320; line-height: 1; letter-spacing: -0.03em; }
-  .set-duty-label { margin-top: 5px; color: #aaa; font-size: 11px; letter-spacing: .06em; font-weight: 700; }
-  .stepper { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .set-duty-value { font-size: 28px; font-weight: 340; line-height: 1; letter-spacing: -0.02em; }
+  .set-duty-label { margin-top: 4px; color: #c6c6c6; font-size: 10px; letter-spacing: .05em; font-weight: 700; }
+  .stepper { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .step-btn {
-    height: 34px;
-    border-radius: 13px;
+    height: 26px;
+    min-width: 0;
+    border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.025);
     color: #efefef;
@@ -265,34 +268,36 @@ const CARD_STYLE = `
     transition: background .12s ease, border-color .12s ease;
   }
   .step-btn:active { background: rgba(255,138,34,.15); border-color: rgba(255,138,34,.48); }
-  .step-btn svg { width: 20px; height: 20px; color: #ff9b31; }
+  .step-btn svg { width: 17px; height: 17px; color: #ff9b31; }
   .duty-now {
     text-align: center;
-    color: #bdbdbd;
-    font-size: 12px;
-    line-height: 1.35;
+    color: #d0d0d0;
+    font-size: 10px;
+    line-height: 1.25;
+    white-space: nowrap;
   }
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: 8px;
+    gap: 6px;
+    margin-top: 7px;
   }
   .stat {
     min-width: 0;
     border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 14px;
+    border-radius: 11px;
     background: rgba(0,0,0,0.14);
-    padding: 8px 10px;
+    padding: 7px 5px;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: 1fr;
     align-items: center;
-    gap: 9px;
+    gap: 2px;
+    text-align: center;
     cursor: pointer;
   }
-  .stat svg { width: 17px; height: 17px; color: #34a9ff; opacity: .9; }
-  .stat-label { color: #a9a9a9; font-size: 11px; letter-spacing: .07em; font-weight: 730; }
-  .stat-value { margin-top: 1px; font-size: 15px; font-weight: 560; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat svg { display: none; }
+  .stat-label { color: #a9a9a9; font-size: 10px; letter-spacing: .06em; font-weight: 730; }
+  .stat-value { font-size: 11px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @keyframes flame-sway {
     0% { transform: translateX(-1px) scaleX(.95) rotate(-2deg); }
     100% { transform: translateX(1px) scaleX(1.04) rotate(2deg); }
@@ -300,67 +305,6 @@ const CARD_STYLE = `
   @keyframes flame-core {
     0% { transform: rotate(45deg) scale(.92); opacity: .78; }
     100% { transform: rotate(45deg) scale(1.06); opacity: 1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .flame, .flame::after { animation: none; }
-    .fuel-fill { transition: none; }
-  }
-  @container (max-width: 720px) {
-    .heater-card { padding: 10px; }
-    .header { gap: 8px; margin-bottom: 8px; }
-    .title { font-size: 15px; gap: 7px; }
-    .title svg { width: 20px; height: 20px; }
-    .state-pill { min-width: 70px; padding: 6px 9px; font-size: 12px; }
-    .power-btn { height: 34px; padding: 0 10px; font-size: 12px; border-radius: 11px; }
-    .power-btn svg { width: 16px; height: 16px; }
-    .main-layout { gap: 8px; grid-template-columns: minmax(86px, 116px) minmax(0, 1fr) minmax(92px, 122px); }
-    .panel { padding: 9px 7px; border-radius: 14px; }
-    .panel-title { font-size: 11px; letter-spacing: .06em; }
-    .fuel-gauge { min-height: 112px; border-radius: 13px; }
-    .fuel-litres { font-size: 24px; }
-    .fuel-litres span, .fuel-percent { font-size: 11px; }
-    .temp-value { font-size: 32px; }
-    .temp-value span { font-size: 15px; }
-    .flame-panel { grid-template-rows: auto minmax(82px, 1fr) auto; }
-    .flame-stage { min-height: 82px; }
-    .set-duty { min-height: 72px; }
-    .set-duty-value { font-size: 38px; }
-    .stepper { gap: 8px; }
-    .step-btn { height: 32px; border-radius: 11px; }
-    .stats { gap: 7px; margin-top: 8px; }
-    .stat { padding: 7px 8px; border-radius: 12px; gap: 6px; }
-    .stat svg { width: 16px; height: 16px; }
-    .stat-value { font-size: 14px; }
-    .stat-label { font-size: 10px; }
-  }
-  @container (max-width: 500px) {
-    .heater-card { padding: 8px; }
-    .header { grid-template-columns: minmax(0, 1fr) auto auto; margin-bottom: 7px; }
-    .title { font-size: 13px; letter-spacing: .04em; }
-    .state-pill { order: 0; grid-column: auto; width: auto; min-width: 58px; padding: 5px 7px; }
-    .power-btn span { display: none; }
-    .power-btn { width: 36px; padding: 0; }
-    .main-layout { gap: 6px; grid-template-columns: minmax(76px, .85fr) minmax(0, 1.3fr) minmax(76px, .85fr); }
-    .flame-panel { grid-column: auto; grid-row: auto; }
-    .fuel-panel { grid-column: auto; grid-row: auto; }
-    .duty-panel { grid-column: auto; grid-row: auto; }
-    .panel { padding: 8px 5px; border-radius: 12px; }
-    .fuel-gauge { min-height: 92px; }
-    .fuel-litres { font-size: 18px; }
-    .fuel-percent { margin-top: 4px; }
-    .temp-value { font-size: 27px; }
-    .flame-panel { grid-template-rows: auto minmax(70px, 1fr) auto; }
-    .flame-stage { min-height: 70px; }
-    .flame { width: calc(34px + var(--flame-duty, 0) * 34px); height: calc(30px + var(--flame-duty, 0) * 46px); }
-    .set-duty { min-height: 58px; }
-    .set-duty-value { font-size: 30px; }
-    .set-duty-label, .duty-now, .center-state { font-size: 10px; }
-    .step-btn { height: 28px; }
-    .step-btn svg { width: 18px; height: 18px; }
-    .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .stat { padding: 7px 5px; grid-template-columns: 1fr; gap: 3px; text-align: center; }
-    .stat svg { display: none; }
-    .stat-value { font-size: 12px; }
   }
 `;
 
@@ -432,7 +376,7 @@ class DieselHeaterCard extends HTMLElement {
           </aside>
           <main class="panel flame-panel">
             <div class="temp-readout" data-entity="chamber">
-              <div class="panel-title">CHAMBER TEMP</div>
+            <div class="panel-title">TEMP</div>
               <div class="temp-value">-<span>°C</span></div>
             </div>
             <div class="flame-stage" aria-hidden="true">
@@ -444,7 +388,7 @@ class DieselHeaterCard extends HTMLElement {
             <div class="center-state" data-entity="state-text">-</div>
           </main>
           <aside class="panel duty-panel">
-            <div class="panel-title">HEAT LEVEL</div>
+            <div class="panel-title">HEAT</div>
             <div class="set-duty" data-entity="duty-set">
               <div>
                 <div class="set-duty-value">-</div>

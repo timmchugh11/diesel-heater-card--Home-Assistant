@@ -12,6 +12,9 @@ const DEFAULT_CONFIG = {
   entity_duty_set: "",
   entity_duty_up: "",
   entity_duty_down: "",
+  duty_display_mode: "raw",
+  duty_min: null,
+  duty_max: null,
   entity_fuel: "",
   fuel_max_litres: 20,
   temp_decimals: 1,
@@ -26,6 +29,9 @@ function normalizeConfig(config) {
     fuel_max_litres: Math.max(0.1, Number(c.fuel_max_litres ?? DEFAULT_CONFIG.fuel_max_litres) || DEFAULT_CONFIG.fuel_max_litres),
     temp_decimals: Math.max(0, Number(c.temp_decimals ?? DEFAULT_CONFIG.temp_decimals) || 0),
     flame_max_temp: Math.max(1, Number(c.flame_max_temp ?? DEFAULT_CONFIG.flame_max_temp) || DEFAULT_CONFIG.flame_max_temp),
+    duty_display_mode: c.duty_display_mode === "percent" ? "percent" : "raw",
+    duty_min: c.duty_min == null || c.duty_min === "" ? null : Number(c.duty_min),
+    duty_max: c.duty_max == null || c.duty_max === "" ? null : Number(c.duty_max),
   };
 }
 
@@ -139,7 +145,7 @@ const CARD_STYLE = `
   }
   .main-layout {
     display: grid;
-    grid-template-columns: 68px minmax(0, 1fr) 68px;
+    grid-template-columns: 82px minmax(0, 1fr) 82px;
     gap: 6px;
     align-items: stretch;
     min-height: 0;
@@ -149,7 +155,7 @@ const CARD_STYLE = `
     border: 1px solid var(--dh-border-soft);
     border-radius: 12px;
     background: var(--dh-panel-bg);
-    padding: 8px 5px;
+    padding: 8px 7px;
   }
   .panel-title {
     font-size: 9px;
@@ -483,7 +489,13 @@ class DieselHeaterCard extends HTMLElement {
     this._el.stats.duty.textContent = duty == null ? "-" : `${this._fmt(duty, 0)} %`;
 
     const setDuty = this._stateNum(this.config.entity_duty_set);
-    this._el.dutySetValue.textContent = setDuty == null ? "-" : this._fmt(setDuty, this._setDutyDecimals());
+    if (setDuty == null) {
+      this._el.dutySetValue.textContent = "-";
+    } else if (this.config.duty_display_mode === "percent") {
+      this._el.dutySetValue.textContent = `${this._fmt(this._rawDutyToPercent(setDuty), 0)}%`;
+    } else {
+      this._el.dutySetValue.textContent = this._fmt(setDuty, this._setDutyDecimals());
+    }
 
     const fan = this._stateNum(this.config.entity_fan);
     const pump = this._stateNum(this.config.entity_pump);
@@ -501,9 +513,8 @@ class DieselHeaterCard extends HTMLElement {
     const entity = this.config.entity_duty_set;
     const state = this._hass?.states?.[entity];
     if (entity && state) {
+      const { min, max } = this._dutyRange();
       const attrs = state.attributes || {};
-      const min = Number.isFinite(Number(attrs.min)) ? Number(attrs.min) : 0;
-      const max = Number.isFinite(Number(attrs.max)) ? Number(attrs.max) : 100;
       const step = Number.isFinite(Number(attrs.step)) && Number(attrs.step) > 0 ? Number(attrs.step) : 1;
       const current = this._stateNum(entity);
       if (current != null) {
@@ -542,11 +553,28 @@ class DieselHeaterCard extends HTMLElement {
   }
 
   _setDutyDecimals() {
+    if (this.config.duty_display_mode === "percent") return 0;
     const attrs = this._hass?.states?.[this.config.entity_duty_set]?.attributes || {};
     const step = Number(attrs.step);
     if (!Number.isFinite(step) || step >= 1) return 0;
     const text = String(step);
     return text.includes(".") ? text.split(".")[1].length : 0;
+  }
+
+  _dutyRange() {
+    const attrs = this._hass?.states?.[this.config.entity_duty_set]?.attributes || {};
+    const attrMin = Number(attrs.min);
+    const attrMax = Number(attrs.max);
+    const configMin = Number(this.config.duty_min);
+    const configMax = Number(this.config.duty_max);
+    const min = Number.isFinite(configMin) ? configMin : Number.isFinite(attrMin) ? attrMin : 0;
+    const max = Number.isFinite(configMax) ? configMax : Number.isFinite(attrMax) ? attrMax : 100;
+    return max > min ? { min, max } : { min: 0, max: 100 };
+  }
+
+  _rawDutyToPercent(value) {
+    const { min, max } = this._dutyRange();
+    return clamp(((value - min) / (max - min)) * 100, 0, 100);
   }
 
   _isOffState(value) {

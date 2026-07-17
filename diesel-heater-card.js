@@ -450,8 +450,8 @@ class DieselHeaterCard extends HTMLElement {
     };
 
     this._el.power.addEventListener("click", () => this._pressPower());
-    this._el.stepUp.addEventListener("click", () => this._changeDuty(1));
-    this._el.stepDown.addEventListener("click", () => this._changeDuty(-1));
+    this._bindDutyButton(this._el.stepUp, 1);
+    this._bindDutyButton(this._el.stepDown, -1);
     this._el.state.addEventListener("click", () => this._moreInfo(this.config.entity_state));
     this._el.centerState.addEventListener("click", () => this._moreInfo(this.config.entity_state));
     this._el.fuelGauge.addEventListener("click", () => this._moreInfo(this.config.entity_fuel));
@@ -524,6 +524,54 @@ class DieselHeaterCard extends HTMLElement {
         }
         return;
       }
+    }
+
+    const fallback = direction > 0 ? this.config.entity_duty_up : this.config.entity_duty_down;
+    if (fallback) this._hass?.callService("button", "press", { entity_id: fallback });
+  }
+
+  _bindDutyButton(button, direction) {
+    let holdTimer = null;
+    let held = false;
+
+    const cancelHold = () => {
+      if (holdTimer != null) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    };
+
+    button.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      held = false;
+      cancelHold();
+      holdTimer = setTimeout(() => {
+        holdTimer = null;
+        held = true;
+        this._setDutyExtreme(direction);
+      }, 600);
+    });
+    button.addEventListener("pointerup", cancelHold);
+    button.addEventListener("pointercancel", cancelHold);
+    button.addEventListener("pointerleave", cancelHold);
+    button.addEventListener("click", () => {
+      if (held) {
+        held = false;
+        return;
+      }
+      this._changeDuty(direction);
+    });
+  }
+
+  _setDutyExtreme(direction) {
+    const entity = this.config.entity_duty_set;
+    if (entity && this._hass?.states?.[entity]) {
+      const { min, max } = this._dutyRange();
+      this._hass?.callService("input_number", "set_value", {
+        entity_id: entity,
+        value: direction > 0 ? max : min,
+      });
+      return;
     }
 
     const fallback = direction > 0 ? this.config.entity_duty_up : this.config.entity_duty_down;
